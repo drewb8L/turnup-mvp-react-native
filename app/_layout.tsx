@@ -1,5 +1,15 @@
-import { Stack } from "expo-router";
+import {Platform} from 'react-native';
+const SHOW_STORYBOOK = true;
 
-export default function RootLayout() {
-  return <Stack />;
+import React from 'react';
+import StorybookUIRoot from '../.storybook';
+
+export default function RootLayoutWrapper() {
+  if (__DEV__ && SHOW_STORYBOOK && Platform.OS === 'ios') {
+    const StorybookUIRoot = require('../.storybook/index').default;
+    return <StorybookUIRoot />;
+  } else {
+    const { Stack } = require('expo-router');
+    return <Stack />;
+  }
 }
