@@ -37,9 +37,10 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     image: {
-        height: "100px",
-        width: '100px',
-        aspectRatio: 3 / 4,
+        height: 100,
+        width: 100,
         borderRadius: 5,
+        marginBottom: 8,
+        resizeMode: "cover"
     },
 })

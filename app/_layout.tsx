@@ -1,5 +1,5 @@
 import {Platform} from 'react-native';
-const SHOW_STORYBOOK = true;
+const SHOW_STORYBOOK = false;
 
 import React from 'react';
 import StorybookUIRoot from '../.storybook';
