@@ -8,11 +8,11 @@ export type ImageCardProps = {
     children: React.ReactNode;
 }
 
-export default ImageCard = ({title, children, imageUrl, style }: ImageCardProps) => {
+ const ImageCard = ({title, children, imageUrl, style }: ImageCardProps) => {
     return(
         <View style={[styles.card, style]}>
             <Text style={styles.title}>{title}</Text>
-            <Image source={ imageUrl } style={styles.image} />
+            <Image source={{uri: imageUrl} } style={styles.image} />
             <View>{children}</View>
         </View>
     )
@@ -44,3 +44,5 @@ const styles = StyleSheet.create({
         resizeMode: "cover"
     },
 })
+
+export default ImageCard;

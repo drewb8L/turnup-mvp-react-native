@@ -3,7 +3,7 @@ import Index from "@/index";
 
 test('basic test', async () => {
     render(<Index/>);
-    const element = await screen.findByText(/edit/i, {}, { timeout: 5000 });
+    const element = await screen.findByText(/sign in to get started/i);
     expect(element).toBeTruthy();
 
 });

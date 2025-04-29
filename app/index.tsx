@@ -12,13 +12,7 @@ import ImageCard from "@/components/ImageCard";
             }}
         >
             <HomePage/>
-            {/*<Text>Edit app/index.tsx to edit this screen!.</Text>*/}
-            {/*<Card title="New Card">*/}
-            {/*    <Text>This is a Card shown in the app.</Text>*/}
-            {/*</Card>*/}
-            {/*<ImageCard title="New ImageCard" imageUrl={require("../assets/images/cheeseburger.png")}>*/}
-            {/*    <Text>This is a ImageCard shown in the app.</Text>*/}
-            {/*</ImageCard>*/}
+
         </View>
     );
 }
