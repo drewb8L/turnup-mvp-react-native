@@ -3,7 +3,6 @@ import { View, Text, Button, Platform } from "react-native";
 import * as Google from "expo-auth-session/providers/google";
 import { makeRedirectUri } from "expo-auth-session";
 import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { saveAuthToken } from "@/utils/storage";
 
 function HomePage() {
@@ -21,17 +20,38 @@ function HomePage() {
 
   useEffect(() => {
     if (response?.type === "success") {
-      const { authentication } = response;
-      console.log("✅ Login Successful!");
-      console.log("Access Token:", authentication?.accessToken);
-      if (authentication?.accessToken) {
-        saveAuthToken(authentication.accessToken)
-          .then(() => {
-            console.log("Token stored successfully");
-            router.push("/dashboard");
+      const idToken = response.params.id_token;
+
+      if (idToken) {
+        fetch(`http://192.168.50.119:5111/api/users/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            provider: "google",
+            idToken,
+            firstName: response.params.given_name,
+          }),
+        })
+          .then(async (response) => {
+            const text = await response.text();
+            try {
+              const data = JSON.parse(text);
+              if (data.token) {
+                await saveAuthToken(data.token);
+                console.log("Backend token stored successfully");
+
+                router.push("/dashboard");
+              } else {
+                console.error("No token found in response:", data);
+              }
+            } catch (e) {
+              console.error(`Failed to parse response: ${text}`);
+            }
           })
-          .catch((err) => {
-            console.error(`Error storing token ${err}`);
+          .catch((error) => {
+            console.error("Error storing token:", error);
           });
       }
     }
