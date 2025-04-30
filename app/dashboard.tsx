@@ -1,3 +1,4 @@
+
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import * as Storage from "./utils/storage";
@@ -12,31 +13,10 @@ export default function Dashboard() {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    // const login = async () => {
-    //   try {
-    //     const token = await Storage.getAuthToken();
-    //     setToken(token);
-    //     const response = await fetch(
-    //       `http://192.168.50.119:5111/api/users/auth/login`,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           Authorization: `Bearer ${token}`,
-    //         },
-    //         body: JSON.stringify({ provider: "google", idToken: token }),
-    //       },
-    //     );
-    //     const data = await response.json();
-    //     console.log(data);
-    //     setUser(data);
-    //   } catch (error) {
-    //     console.error("Error fetching user info:", error);
-    //   }
-    // };
     const getUserInfo = async () => {
       try {
         const token = await Storage.getAuthToken();
+        console.log("Token being sent:", token);
         setToken(token);
         const response = await fetch(
           `http://192.168.50.119:5111/api/users/me`,
@@ -44,18 +24,26 @@ export default function Dashboard() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        const data = await response.json();
-        setUser(data);
-        console.log("User data:", data);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          setUser(data);
+          console.log("User data:", data);
+        } else {
+          throw new Error("Expected JSON response");
+        }
+      } catch (e) {
+        console.error("Error fetching user data:", e);
       }
     };
-    // login();
     getUserInfo();
   }, []);
 

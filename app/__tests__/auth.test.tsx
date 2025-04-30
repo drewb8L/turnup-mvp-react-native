@@ -49,13 +49,11 @@ describe("Authentication Flow", () => {
       Promise.resolve({
         ok: true,
         status: 200,
-        text: () =>
-          Promise.resolve(
-            JSON.stringify({
-              token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-            }),
-          ),
+        json: () =>
+          Promise.resolve({
+            token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          }),
       } as unknown as Response),
     );
 
