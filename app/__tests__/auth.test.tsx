@@ -36,14 +36,26 @@ describe("Authentication Flow", () => {
   it("successfully logs in and stores token", async () => {
     (GoogleAuthSession.useAuthRequest as jest.Mock).mockReturnValue([
       {}, // request
-      { type: "success", authentication: { accessToken: "mock-token" } },
+      { type: "success", params: { id_token: "mock-token" } },
       jest.fn(() =>
         Promise.resolve({
           type: "success",
-          authentication: { accessToken: "mock-token" },
+          params: { id_token: "mock-token" },
         }),
       ),
     ]);
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        text: () =>
+          Promise.resolve(
+            JSON.stringify({
+              token:
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c,
+            },
+          ,
+      },
+    );
 
     render(<HomePage />);
     const button = await screen.findByText(/sign in with google/i);
@@ -55,7 +67,7 @@ describe("Authentication Flow", () => {
     await waitFor(() => {
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         "authToken",
-        "mock-token",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
       );
     });
   });
