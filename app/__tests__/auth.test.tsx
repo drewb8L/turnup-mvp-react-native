@@ -47,14 +47,16 @@ describe("Authentication Flow", () => {
 
     global.fetch = jest.fn(() =>
       Promise.resolve({
+        ok: true,
+        status: 200,
         text: () =>
           Promise.resolve(
             JSON.stringify({
               token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c,
-            },
-          ,
-      },
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            }),
+          ),
+      } as unknown as Response),
     );
 
     render(<HomePage />);
@@ -67,7 +69,7 @@ describe("Authentication Flow", () => {
     await waitFor(() => {
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         "authToken",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
       );
     });
   });
