@@ -1,2 +1,1 @@
-
-import "./test_utils/expoMocks"
+import "./test_utils/expoMocks";
